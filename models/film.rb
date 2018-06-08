@@ -36,6 +36,12 @@ class Film
     SqlRunner.run(sql, values)
   end
 
+  def self.delete_all() #DELETE all customers
+    sql = "DELETE FROM films"
+    values = []
+    SqlRunner.run(sql, values)
+  end
+
 
   def self.map_items(film_data) #refactoring shortcut
     return film_data.map {|film| Film.new(film)}
