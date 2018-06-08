@@ -5,6 +5,7 @@ require_relative('../models/customer.rb')
 require('pry')
 
 
+Customer.delete_all()
 
 
 customer1 = Customer.new({'name' => 'Ben', 'funds' => 20})
