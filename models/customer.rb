@@ -3,7 +3,7 @@ require_relative('../db/sql_runner.rb')
 class Customer
 
   attr_reader(:id)
-  attr_reader(:name, :funds)
+  attr_accessor(:name, :funds)
 
   def initialize(details)
     @id = details['id'].to_i if details['id']
@@ -11,7 +11,7 @@ class Customer
     @funds = details['funds'].to_i
   end
 
-  def save() # save function
+  def save() #CREATE & save
     sql = "INSERT INTO customers
            (name, funds)
            VALUES ($1, $2)
@@ -21,7 +21,7 @@ class Customer
     @id = customer['id'].to_i()
   end
 
-  def self.all() # select and display all self(customers)
+  def self.all() #READ & display all customers
     sql = "SELECT * FROM customers"
     values = []
     customers = SqlRunner.run(sql, values)
@@ -29,7 +29,13 @@ class Customer
     return results
   end
 
-  def self.delete_all() # delete all self(customers)
+  def update #UPDATE
+    sql = "UPDATE customers SET (name, funds) = ($1, $2) WHERE id = $3"
+    values = [@name, @funds, @id]
+    SqlRunner.run(sql, values)
+  end
+
+  def self.delete_all() #DELETE all customers
     sql = "DELETE FROM customers"
     values = []
     SqlRunner.run(sql, values)
@@ -37,9 +43,7 @@ class Customer
 
 
 
-
-
-  def self.map_items(customer_data) # refactoring shortcut
+  def self.map_items(customer_data) #refactoring shortcut
     return customer_data.map {|customer| Customer.new(customer)}
   end
 
